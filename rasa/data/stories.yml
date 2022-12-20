@@ -1,0 +1,111 @@
+version: "3.1"
+
+stories:
+
+- story: happy path
+  steps:
+#  - intent: greet
+#  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+#  - intent: greet
+#  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+#  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+#  - intent: greet
+#  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+#  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_sorry
+
+- story: talk hobbies
+  steps:
+#  - intent: greet
+#  - action: utter_greet
+  - intent: talk_hobbies
+  - action: utter_talk_hobbies
+  - intent: affirm
+  - action: utter_goodbye
+
+- story: weather
+  steps:
+  - intent: weather
+  - slot_was_set:
+    - location
+  - action: action_get_weather
+#  - intent: thanks
+#  - action: utter_welcome
+
+- story: tell joke
+  steps:
+  - intent: ask_joke
+  - action: action_get_joke
+  - intent: funny
+  - action: utter_happy
+
+- story: activity 
+  steps:
+  - intent: activity
+  - action: action_get_activity
+
+- story: beer
+  steps:
+  - intent: talk_beer
+  - action: action_get_beer
+
+- story: recipe
+  steps: 
+  - intent: talk_meal
+  - action: action_get_meal
+
+- story: cocktail
+  steps:
+  - intent: talk_cocktail
+  - action: action_get_cocktail
+    
+- story: meaning
+  steps:
+  - intent: ask_meaning
+  - action: action_get_meaning
+
+- story: request
+  steps:
+  - intent: do_request
+  - action: action_get_response
+
+- story: get news
+  steps:
+  - intent: EXTERNAL_reminder_get_news
+  - action: action_react_to_reminder_to_get_news
+  - intent: deny
+  - action: action_get_news
+
+- story: riddle affirm path
+  steps:
+  - intent: EXTERNAL_reminder
+  - action: action_react_to_reminder
+  - intent: affirm
+  - action: action_get_riddle
+
+- story: riddle deny path
+  steps:
+  - intent: EXTERNAL_reminder
+  - action: action_react_to_reminder
+  - intent: deny
+  - action: action_get_riddle
+
+- story: solve riddle
+  steps:
+  - intent: EXTERNAL_reminder_answer_riddle
+  - action: action_get_answer_to_riddle

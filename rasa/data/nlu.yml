@@ -1,0 +1,160 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+    - okay
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - feeling very good
+    - super stoked
+    - extremely good
+    - fine
+
+- intent: mood_unhappy
+  examples: |
+    - horrible
+    - I am sad
+    - disappointed
+    - super sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+
+- intent: bot_challenge
+  examples: |
+    - am I talking to a bot?
+    - am I talking to a human?
+    - who are you?
+    - bot
+    - your name
+
+- intent: talk_hobbies
+  examples: |
+    - play
+    - instrument
+    - hobbies
+    - hobby
+    - listen
+    - music
+    - game
+
+- intent: weather
+  examples: |
+    - weather in [Dusseldorf](location)
+    - weather in [Cologne](location)
+    - weather of [Bonn] (location)
+    - weather in [Berlin](location)
+    - weather of [Wuppertal](location)
+    - weather of [London](location)
+    - weather in [Munich](location)
+
+- intent: activity
+  examples: |
+    - bored
+    - to do
+    - activity
+
+- intent: thanks
+  examples: |
+    - thanks
+    - thank you
+
+- intent: ask_joke
+  examples: |
+    - joke
+    - Chuck Norris
+
+- intent: talk_beer
+  examples: |
+    - beer
+    - brew beer
+
+- intent: talk_meal
+  examples: |
+    - cook
+    - meal
+    - eat
+    - eating
+
+- intent: talk_cocktail
+  examples: |
+    - cocktail
+    - margarita
+    - drink
+
+- intent: ask_meaning
+  examples: |
+    - What does [thing](word) mean?
+    - what [thing](word) is?
+    - Explain to me what [thing](word) is?
+    - [thing](word) mean
+    - Define [thing](word) 
+    - definition for [thing](word)
+    - meaning of [thing](word) 
+
+- intent: funny
+  examples: |
+    - haha
+    - funny
+    - lol
+
+- intent: do_request
+  examples: |
+    - I want
+    - I need
+
+

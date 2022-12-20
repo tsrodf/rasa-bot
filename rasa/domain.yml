@@ -1,0 +1,121 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - talk_hobbies
+  - weather:
+      use entities:
+      - location
+  - activity
+  - thanks
+  - ask_joke
+  - talk_beer
+  - talk_meal
+  - talk_cocktail
+  - ask_meaning:
+      use entities:
+      - word
+  - funny
+  - do_request
+  - EXTERNAL_reminder
+  - EXTERNAL_reminder_get_news
+  - EXTERNAL_reminder_answer_riddle
+
+entities:
+- location
+- word
+
+slots:
+  location:
+    type: text
+    mappings:
+    - type: custom
+  word:
+    type: any
+    mappings:
+    - type: custom
+  news:
+    type: any
+    mappings:
+    - type: custom
+  riddle_answer:
+    type: any
+    mappings:
+    - type: custom
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+  - text: "Hi, how are you doing?"
+
+  utter_cheer_up:
+  #- text: "Here is something to cheer you up:"
+  #  image: "https://i.imgur.com/nGF1K8f.jpg"
+  - text: "Remember Winnie the Pooh wore a crop top w/ no panties and ate his fave food and loved himself and u can too."
+  - text: "When you are feeling sad, just remember that somewhere in the world, there's a moron pushing a door that said pull."
+  - text: "Having a bad day? Don't worry, it could be worse. You could have visible panty lines and not be wearing underwear."
+  - text: "Hello! I'm the happiness fairy. I've sprinkled happy dust on you. Now smile dammit, that shit's expensive."
+
+#  utter_did_that_help:
+#  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+  - text: "That's great!"
+  - text: "Happy to read that!"
+
+  utter_goodbye:
+  - text: "Bye"
+  - text: "Alas, my friend!"
+  - text: "Have a nice day!"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+  - text: "I'm a Rasa bot, but you can call me Peter."
+  - text: "I'm just Peter."
+  - text: "I'm Peter. And who are you?"
+
+  utter_talk_hobbies:
+  - text: "I used to play the piano, I cannot anymore though."
+  - text: "Which kind of music do you like?"
+  - text: "We should play chess sometime."
+
+  utter_sorry:
+  - text: "I'm sorry to read that."
+  - text: "Sorry!"
+  - text: "I am really sorry..."
+
+  utter_welcome:
+  - text: You're welcome!
+  - text: You are more than welcome, my friend.
+  - text: My pleasure.
+  - text: Don't mention it!
+  - text: I'm glad to help!
+  - text: Anytime!
+  - text: Not at all!
+
+actions:
+  - action_get_weather
+  - action_get_joke
+  - action_get_activity
+  - action_get_beer
+  - action_get_meal
+  - action_get_cocktail
+  - action_get_meaning
+  - action_get_response
+  - action_react_to_reminder
+  - action_get_greeting
+  - action_react_to_reminder_to_get_news
+  - action_get_news
+  - action_get_riddle
+  - action_get_answer_to_riddle
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
