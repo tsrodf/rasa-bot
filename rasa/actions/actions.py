@@ -8,7 +8,7 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet, ReminderScheduled, ReminderCancelled
+from rasa_sdk.events import SlotSet
 import requests
 import json
 import re
@@ -38,26 +38,17 @@ class ActionGetWeather(Action):
 
     def run(self, dispatcher, tracker, domain):
         api_key = 'c870dbb3677c869223e6affd45e88f6a'
-#        loc = tracker.get_slot('location')
-
         # default location is Dusseldorf
         loc = 'Dusseldorf'
 
-        ''' Look for given value in entities -> it only works when: 
-            - the given location is saved as intent weather_for_location into nlu.yml
-            - location is defined as entity in domain.yml
-        '''
         try:
+            # search for location in entities (it only works if entity is declared in nlu)
             entities = tracker.latest_message.get("entities")
             if entities:
                 loc = entities[0]["value"]
             else:
-                ''' Extract location from text
-                    - value should be at a certain position
-                    - if word not found, default value applies
-                '''
+                # extract location from text
                 text = tracker.latest_message.get("text")
-
                 # check if weather in array
                 if "weather" in text:
                     words = text.split()
@@ -77,13 +68,15 @@ class ActionGetWeather(Action):
             response = """It is currently {} in {} at the moment. The temperature is {} degree Celsius, the humidity is {}% and the wind speed is {} mph.""".format(
                 condition, city, temperature_c, humidity, wind_mph)
         except:
-            response = """Sorry, I cannot help!"""
+            responses = ["""You'd better ask the weatherman.""", """It may be sunny or pouring rain, who knows?""", """Does it really matter? Just accept whatever comes."""]
+            response = responses[random.randint(0, 2)]
         finally:
             dispatcher.utter_message(response)
-            return [SlotSet('location', loc)]
+#            return [SlotSet('location', loc)]
+            return []
 
 
-# action to return a joke
+# action to get a random joke
 class ActionGetJoke(Action):
 
     def name(self) -> Text:
@@ -91,17 +84,17 @@ class ActionGetJoke(Action):
 
     def run(self, dispatcher, tracker, domain):
         try:
-            url = "https://api.chucknorris.io/jokes/random"
+            url = 'https://api.chucknorris.io/jokes/random'
             status = requests.get(url).json()
             response = """{}. Funny, isn't it?""".format(status["value"])
         except:
-            response = """Sorry, I cannot help!"""
+            response = """Do you fancy go shopping? That was a joke!"""
         finally:
             dispatcher.utter_message(response)
             return []
 
 
-# action to return an activity
+# action to get a random activity
 class ActionGetActivity(Action):
 
     def name(self) -> Text:
@@ -111,32 +104,8 @@ class ActionGetActivity(Action):
         try:
             activity = requests.get('https://www.boredapi.com/api/activity').json()["activity"]
             response = """Here is something you could do: {}.""".format(activity)
-
-            # test - try to set a reminder to react in 30 s
-            date = datetime.datetime.now() + datetime.timedelta(seconds=30)
-            reminder = ReminderScheduled(
-                "EXTERNAL_reminder",
-                trigger_date_time=date,
-                kill_on_user_message=False,
-            )
         except:
-            response = """Sorry, I cannot help!"""
-        finally:
-            dispatcher.utter_message(response)
-            return [reminder]
-
-
-# action to ask if user wants to solve a riddle 
-class ActionReactToReminder(Action):
-
-    def name(self) -> Text:
-        return "action_react_to_reminder"
-
-    def run(self, dispatcher, tracker, domain):
-        try:
-            response = """Would you like to solve a riddle?"""
-        except:
-            response = """Oops! Something went wrong... :("""
+            response = """Let's just breathe."""
         finally:
             dispatcher.utter_message(response)
             return []
@@ -150,29 +119,16 @@ class ActionGetRiddle(Action):
 
     def run(self, dispatcher, tracker, domain):
         try:
-            intent = tracker.latest_message['intent'].get('name')
             url = 'https://api.api-ninjas.com/v1/riddles'
             response = requests.get(url).json()[0]
             title = response['title']
             question = response['question']
             answer = response['answer']
-
-            date = datetime.datetime.now() + datetime.timedelta(seconds=30)
-            reminder = ReminderScheduled(
-                "EXTERNAL_reminder_answer_riddle",
-                trigger_date_time=date,
-                kill_on_user_message=False,
-            )
-
-            if intent == 'affirm':
-                response = """Okay, it's called {}: {}""".format(title,question)
-            else:
-                response = """I'm gonna do it anyway, so here it goes. It's called {}: {}. You have 1 minute!""".format(title,question)
-        
+            response = """Time to solve a riddle. It's called {}: {}""".format(title,question)
             dispatcher.utter_message(response)
-            return [reminder,SlotSet('riddle_answer', answer)]
+            return [SlotSet('riddle_answer', answer)]
         except:
-            response = """Oops! Something went wrong... :("""
+            response = """Try again later."""
             dispatcher.utter_message(response)
             return []        
 
@@ -193,46 +149,21 @@ class ActionGetAnswerToRiddle(Action):
 #                    answer = word
 #                    break
             if text == solution:
-                response = """Well done! You've solved it!!!"""
+                response = """You nailed it!"""
             else:
-                response = """Try better next time! Here is the solution: {}""".format(solution)
+                response = """Solution was: {}. Try better next time!""".format(solution)
         except:
-            response = """Oops! Something went wrong... :("""
+            response = """Something didn't go as expected."""
         finally:
             dispatcher.utter_message(response)
             return []
     
 
-# action to return greetings and set a reminder
-class ActionGetGreeting(Action):
+# action to get news (only title)
+class ActionGetNewsTitle(Action):
 
     def name(self) -> Text:
-        return "action_get_greeting"
-
-    def run(self, dispatcher, tracker, domain):
-        try:           
-            greetings = ["""Hey! How are you?""", """Hi, how are you doing?""", """Hi there! What a nice day, isn't it?"""]
-            random_index = random.randint(0, 2)
-            response = greetings[random_index]
-            # set reminder
-            date = datetime.datetime.now() + datetime.timedelta(seconds=180)
-            reminder = ReminderScheduled(
-                "EXTERNAL_reminder_get_news",
-                trigger_date_time=date,
-                kill_on_user_message=False,
-            )
-        except:
-            response = """Sorry, I cannot help!"""
-        finally:
-            dispatcher.utter_message(response)
-            return [reminder]
-
-
-# test if action reacts  
-class ActionReactToReminderToGetNews(Action):
-
-    def name(self) -> Text:
-        return "action_react_to_reminder_to_get_news"
+        return "action_get_news_title"
 
     def run(self, dispatcher, tracker, domain):
         try:
@@ -247,8 +178,7 @@ class ActionReactToReminderToGetNews(Action):
                 categories = ['business','entertainment','general','health','science','sports','technology']
                 random_index = random.randint(0, 6)
                 category = categories[random_index]
-                url = 'https://newsapi.org/v2/top-headlines?language=en&sortBy=popularity&category={}&pageSize=10&apiKey={}'.format(category, api_key)
-            
+                url = 'https://newsapi.org/v2/top-headlines?language=en&sortBy=popularity&category={}&pageSize=10&apiKey={}'.format(category, api_key)         
             # get response
             response = requests.get(url).json()
             title = response['articles'][0]['title']
@@ -256,17 +186,17 @@ class ActionReactToReminderToGetNews(Action):
 
             response = """Have you heard about {}?""".format(title)
         except:
-            response = """Oops! Something went wrong... :("""
+            response = """I haven't been watching the news lately. Tell me what's going on all over the world!"""
         finally:
             dispatcher.utter_message(response)
             return [SlotSet('news', description)]
 
 
-# action to return news
-class ActionGetNews(Action):
+# action to get news (only description)
+class ActionGetNewsDescription(Action):
 
     def name(self) -> Text:
-        return "action_get_news"
+        return "action_get_news_description"
 
     def run(self, dispatcher, tracker, domain):
         try:
@@ -280,13 +210,13 @@ class ActionGetNews(Action):
             else:
                 response = """Well, then you'll already know that {}.""".format(description)
         except:
-            response = """Oops! Something went wrong... :("""
+            response = """Sorry, I don't know what to say..."""
         finally:
             dispatcher.utter_message(response)
             return []
 
 
-# action to return info about beer
+# action to get info about a random beer
 class ActionGetBeer(Action):
 
     def name(self) -> Text:
@@ -306,7 +236,7 @@ class ActionGetBeer(Action):
             return []
 
 
-# action to return a recipe suggestion
+# action to get a random recipe suggestion
 class ActionGetMeal(Action):
 
     def name(self) -> Text:
@@ -326,7 +256,7 @@ class ActionGetMeal(Action):
             return []
 
 
-# action to return a cocktail
+# action to get a random cocktail
 class ActionGetCocktail(Action):
 
     def name(self) -> Text:
@@ -362,7 +292,6 @@ class ActionGetMeaning(Action):
 #        dispatcher.utter_message(sentence)
         
         # test extract word from text
-        # todo: use regEx?
         try:
             text = tracker.latest_message.get("text")
             words = text.split()
@@ -382,7 +311,6 @@ class ActionGetMeaning(Action):
             json_data =  json.loads(response)
         #------------------------------------------------------can be random entry of subarray of definitions
         # try to find word
-        
             # word not found
             if isinstance(json_data, dict):
                 text = """Sorry pal, I don't know the word {}.""".format(word)
@@ -398,7 +326,7 @@ class ActionGetMeaning(Action):
             return []
 
 
-# action to return a response of a request
+# action to get a response to a request
 class ActionGetResponse(Action):
 
     def name(self) -> Text:
@@ -416,9 +344,48 @@ class ActionGetResponse(Action):
             if list == []:
                 list.append("anything")
 
-            response = """Why do you want {}?""".format(list[0])
+            response = """{}: isn't that what everybody wants?""".format(list[0])
         except:
-            response = """Sorry, I cannot help!"""
+            response = """Sorry, I cannot help you accomplish that!"""
+        finally:
+            dispatcher.utter_message(response)
+            return []
+
+
+class ActionGetInfo(Action):
+
+    def name(self) -> Text:
+        return "action_get_info"
+
+    def run(self, dispatcher, tracker, domain):
+        word = 'interdimensional_door'
+        meaningless_words = ['is','the','I','I\'d','I\'m','?','!']
+        try:           
+            sentence = tracker.latest_message.get("text")
+            words = sentence.split()
+            
+            for _word in words:
+                for m_word in meaningless_words:
+                    if _word.lower == m_word.lower():
+                        words.remove(_word)
+
+            if sentence.contains('of'): 
+                index = words.index('of')
+            elif sentence.contains('about'):
+                index = words.index('about')
+            elif sentence.contains('who'):
+                index = words.index('who')
+            elif sentence.contains('what'):
+                index = words.index('what')
+            word = words[index+1]
+
+            url = 'https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch={}'.format(word)
+            information = requests.get(url).json()
+            text = information['query'][0]["snippet"]
+            response = re.sub('<[^>]+>', '', text)
+            response = response[0].upper() + response[1:]
+        except:
+            response = """Not found."""
         finally:
             dispatcher.utter_message(response)
             return []

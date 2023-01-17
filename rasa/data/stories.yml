@@ -4,62 +4,49 @@ stories:
 
 - story: happy path
   steps:
-#  - intent: greet
-#  - action: utter_greet
+  - intent: greet
+  - action: utter_greet
   - intent: mood_great
   - action: utter_happy
 
-- story: sad path 1
+- story: sad path
   steps:
-#  - intent: greet
-#  - action: utter_greet
+  - intent: greet
+  - action: utter_greet
   - intent: mood_unhappy
   - action: utter_cheer_up
-#  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
-
-- story: sad path 2
-  steps:
-#  - intent: greet
-#  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-#  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_sorry
 
 - story: talk hobbies
   steps:
-#  - intent: greet
-#  - action: utter_greet
+  - intent: greet
+  - action: utter_greet
   - intent: talk_hobbies
   - action: utter_talk_hobbies
   - intent: affirm
   - action: utter_goodbye
 
-- story: weather
+- story: Talk about the weather
   steps:
-  - intent: weather
-  - slot_was_set:
-    - location
+  - intent: ask_weather
+#  - slot_was_set:
+#    - location
   - action: action_get_weather
-#  - intent: thanks
-#  - action: utter_welcome
 
 - story: tell joke
   steps:
   - intent: ask_joke
   - action: action_get_joke
-  - intent: funny
+  - or:
+    - intent: funny
+    - intent: affirm
   - action: utter_happy
 
-- story: activity 
+- story: Talk about activity 
   steps:
-  - intent: activity
+  - intent: ask_activity
   - action: action_get_activity
 
-- story: beer
+- story: Talk about beer
   steps:
   - intent: talk_beer
   - action: action_get_beer
@@ -84,28 +71,35 @@ stories:
   - intent: do_request
   - action: action_get_response
 
-- story: get news
+- story: Talk about the news
   steps:
-  - intent: EXTERNAL_reminder_get_news
-  - action: action_react_to_reminder_to_get_news
-  - intent: deny
-  - action: action_get_news
+  - intent: ask_news
+  - action: action_get_news_title
+  - or:
+    - intent: affirm
+    - intent: deny
+  - action: action_get_news_description
 
-- story: riddle affirm path
+- story: Solve a riddle
   steps:
-  - intent: EXTERNAL_reminder
-  - action: action_react_to_reminder
-  - intent: affirm
+  - intent: ask_riddle
   - action: action_get_riddle
+#  - intent:
+#  - slot_was_set:
+#    - riddle_answer
+# - action: action_get_answer_to_riddle
 
-- story: riddle deny path
+- story: Ask about info
   steps:
-  - intent: EXTERNAL_reminder
-  - action: action_react_to_reminder
-  - intent: deny
-  - action: action_get_riddle
+  - intent: ask_info
+  - action: action_get_info
 
-- story: solve riddle
+- story: User says thanks
   steps:
-  - intent: EXTERNAL_reminder_answer_riddle
-  - action: action_get_answer_to_riddle
+  - intent: welcome
+  - action: utter_happy
+
+- story: User is offended
+  steps:
+  - intent: offended
+  - action: utter_sorry
