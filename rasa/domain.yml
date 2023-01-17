@@ -120,7 +120,6 @@ actions:
 - action_get_answer_to_riddle
 - action_get_beer
 - action_get_cocktail
-- action_get_greeting
 - action_get_info
 - action_get_joke
 - action_get_meal
