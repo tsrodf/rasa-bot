@@ -2,20 +2,16 @@
 
 ## Installation
 
-1. Create environment with conda: `conda create --name rasabot python=3.8` 
-2. Activate environment with conda: `conda activate rasabot`
+1. Create environment with conda: `conda create --name <name> python=3.8` 
+2. Activate environment with conda: `conda activate <name>`
 3. Install rasa: `pip install rasa`
 4. Create folder *rasa* and cd into it: `mkdir rasa`
 5. Create new project: `rasa init` 
 
-> Note: Rasa is installed through Conda, which was installed at `C:\Users\tsrod\anaconda3`, but the project is generated at the indicated location `C:\Users\tsrod\Documents\github\rasa-bot\rasa`.
-
-## How to use it
-
-1. Activate environment with conda: `conda activate rasabot`
+### Interact through shell
+1. Activate the environment in which rasa was installed if needed.
 2. Run conversation through shell: `rasa shell`
-3. Stop shell: `/stop`
-4. Deactivate environment: `conda deactivate`
+3. To stop shell: `/stop`
 
 ### Interact via REST Service:
 1. Start server with (only) REST interface: `rasa run --connector rest` ( bind specific local ip: `-i  192.168.50.150`)
@@ -24,10 +20,12 @@
 - Send a POST Message to the REST Server with a JSOn Body:
   - `{ "sender": "test_user", "message": "Hi there!"}`
   - Response: `[{"recipient_id": "test_user", "text": "Hey! How are you?"}]`
+
 ### Interact via Websocket:
 1. Start server with CORS enabled: `rasa run --enable-api --cors "*"`
 2. Start action server: `rasa run actions`
 3. Start a webserver of your choice inside the subfolder `./webclient`
+
 ## Add new intents and responses
 
 1. Extend *nlu.yml* file with new intents and interactions.
