@@ -43,3 +43,7 @@ POST Request: https://d8d0-2a01-4f8-1c1e-a475-00-1.eu.ngrok.io/webhooks/rest/web
 
 
 ****
+
+###### Step 8: (Optional: for keeping active and leaving server enviroment)
+- ctrl + b d (tmux detach from session)
+- exit (close ssh session)
