@@ -72,11 +72,11 @@ We don’t have to match predefined questions character by character. Also it fe
 
 - Linux
 
- - The rasa chatbot is hosted on a VM with a headless linux distro.
+  - The rasa chatbot is hosted on a VM with a headless linux distro.
 
 - Ngrok
 
- - Ssh tunnel for public https connectivity of the local rasa process
+  - Ssh tunnel for public https connectivity of the local rasa process
 
 ## Installation
 
