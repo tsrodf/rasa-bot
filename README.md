@@ -41,44 +41,42 @@ We don’t have to match predefined questions character by character. Also it fe
 
 - [Custom intent-based chatbot with pytorch and nltk built from scratch](https://github.com/Blankjr/my-nlp-chatbot).
 
-- - Benefits:
-
-  - - Lightweight process
+-  **Benefits:**
+    - Lightweight process
     - fast training process
 
-  - Drawback:
-
-  - - Only single question/answer conversions possible in our prototype
-    - Extracting variables from question not possible
+  - **Drawback:**
+     - Only single question/answer conversions possible in our prototype
+     - Extracting variables from question not possible
 
 ### Technologies used:
 
 - Rasa
 
-- - with over 25 million downloads, Rasa Open Source is the most popular open source framework for building chat and voice-based AI assistants.
+  - with over 25 million downloads, Rasa Open Source is the most popular open source framework for building chat and voice-based AI assistants.
 
-  - Benefits:
+  - **Benefits:**
 
-  - - Open Source Version available
+    - Open Source Version available
     - Self Host-able
     - Building REST-/ Websocket-Channel
     - Third party system connectors
     - [Stories](https://rasa.com/docs/rasa/stories/) (conversation paths) https://rasa.com/docs/rasa/writing-stories/ 
 
-  - Drawback:
+  - **Drawback:**
 
-  - - Relative resource intense
-    - Long cold start time
-    - Training pipeline takes a while.
-    - Documentation is lacking
+     - Relative resource intense
+     - Long cold start time
+     - Training pipeline takes a while.
+     - Documentation is lacking
 
 - Linux
 
-- - The rasa chatbot is hosted on a VM with a headless linux distro.
+ - The rasa chatbot is hosted on a VM with a headless linux distro.
 
 - Ngrok
 
-- - Ssh tunnel for public https connectivity of the local rasa process
+ - Ssh tunnel for public https connectivity of the local rasa process
 
 ## Installation
 
