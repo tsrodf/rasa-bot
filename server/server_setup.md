@@ -1,6 +1,7 @@
 ###### Step 1:
 
 ssh root@162.55.50.102
+(replace with your server and useraccount for reproducing)
 
 ###### Step 2:
 
