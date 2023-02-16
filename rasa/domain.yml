@@ -1,4 +1,5 @@
 version: '3.1'
+
 intents:
 - affirm
 - ask_activity
@@ -34,6 +35,7 @@ intents:
 - thanks
 - welcome
 - offended
+
 entities:
 - location
 - word
@@ -54,6 +56,7 @@ slots:
     type: any
     mappings:
     - type: custom
+
 responses:
   utter_greet:
   - text: Hey! How are you?
@@ -115,6 +118,7 @@ responses:
   - text: I used to play the piano, I cannot anymore though.
   - text: Which kind of music do you like?
   - text: We should play chess sometime.
+
 actions:
 - action_get_activity
 - action_get_answer_to_riddle
@@ -131,6 +135,7 @@ actions:
 - action_get_weather
 - utter_chitchat
 - utter_greet
+
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
