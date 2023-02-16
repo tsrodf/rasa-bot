@@ -92,7 +92,7 @@ We don’t have to match predefined questions character by character. Also it fe
 
   - Ssh tunnel for public https connectivity of the local rasa process
 
-## Rasa components
+## Rasa Components
 
 ### Domain
 
@@ -148,7 +148,7 @@ Reminders are used to reach out to the used after a set amount of time in order.
 
 In a previous phase of the project reminders were implemented to trigger a specific bot response at a given time to simulate that the bot had taken the lead to change the subject or talk about something in particular. This option was disabled since it does not suit the specifications of the project.
 
-## Rasa architecture
+## Rasa Architecture
 
 Rasa architecture is scalable. The two main components are Natural Language Understanding (NLU) and dialogue management, respectively represented in the following diagram as _NLU Pipeline_ and _Dialogue Policies_. The first is 
 responsible for handling intent classificaton, entity extraction and response retrieval; and the latter decides the next action in a conversation based on the context.
