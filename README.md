@@ -7,15 +7,33 @@
 - [Examples for intent-based chatbots](#examples-for-intent-based-chatbots)
 - [Discarded Concepts](#discarded-concepts)
 - [Technologies used](#technologies-used)
-- [Rasa components](#rasa-components)
-
+- [Rasa Components](#rasa-components)
+  - [Domain](#domain)
+    - [Intents](#intents)
+    - [Responses](#responses)
+    - [Session Configuration](#session-configuration)
+    - [Entities](#entities)
+    - [Slots and Forms](#slots-and-forms)
+    - [Actions](#actions)
+  - [NLU Data](#nlu-data)
+  - [Stories](#stories)
+  - [Rules](#rules)
+  - [Reminders](#reminders)
+- [Rasa Architecture](#rasa-architecture)
+  - [Pipeline Components](#pipeline-components)
+- [Limitations](#limitations)
+- [Posible Enhacements](#possible-enhacements)
 - [Guidelines](#guidelines)
-  - [Installation with conda](#installation-with-conda)
-  - [Interact through Shell](#interact-through-shell)
-  - [Interact with REST-Service](#interact-with-rest-service)
-  - [Interact with Websocket](#interact-with-websocket)
-  - [Advanced remote server setup](#advanced-remote-server-setup)
+  - [Installation with Conda](#installation-with-conda)
+  - [Interaction](#interaction)
+    - [Interact through Shell](#interact-through-shell)
+    - [Interact with REST-Service](#interact-with-rest-service)
+    - [Interact with Websocket](#interact-with-websocket)
+    - [Advanced remote server setup](#advanced-remote-server-setup)
   - [Training](#training)
+    - [Conversation Data Files](#conversation-data-files)
+    - [Interactive Learning](#interactive-learning)
+- [Sources](#sources)
 
 ## Concepts
 
@@ -135,12 +153,25 @@ In a previous phase of the project reminders were implemented to trigger a speci
 Rasa architecture is scalable. The two main components are Natural Language Understanding (NLU) and dialogue management, respectively represented in the following diagram as _NLU Pipeline_ and _Dialogue Policies_. The first is 
 responsible for handling intent classificaton, entity extraction and response retrieval; and the latter decides the next action in a conversation based on the context.
 
+<img src="https://user-images.githubusercontent.com/63344051/219408685-8adf4380-1405-474b-9035-0600b4578585.png" width="70%">
+
+_**Diagram** Rasa architecture overview_
+
+### Pipeline Components
+
+- Language Model
+- Tokenizers
+- Featurizers
+- Intent Classifiers
+- Entity Extractors
+- Selectors
+
 ## Limitations
 
 If no intent detected, no response.
 
-## Possible future enhacements
-- Corpus ergänzen
+## Possible enhacements
+- Add corpus -> example: [Building a rasa chatbot to perform a movie search](https://medium.com/betacom/building-a-rasa-chatbot-to-perform-movie-search-60cea9829e60)
 - webui hosten und text to speech
 
 ## Guidelines
@@ -153,13 +184,15 @@ If no intent detected, no response.
 4. Create folder *rasa* and cd into it.
 5. Run `rasa init` to create a new project with example training data, actions, and config files.
 
-### Interact through shell
+### Interaction
+
+#### Interact through Shell
 
 1. Activate the environment in which rasa has been installed.
 2. Run `rasa shell` to load the trained model and interact with the bot on the command line.
 3. Run to stop shell: `/stop`
 
-### Interact with REST-Service
+#### Interact with REST-Service
 
 1. Start server with (only) REST interface: `rasa run --connector rest` ( bind specific local ip: `-i  192.168.50.150`)
 2. Start action server: `rasa run actions`
@@ -169,20 +202,29 @@ If no intent detected, no response.
   - `{ "sender": "test_user", "message": "Hi there!"}`
   - Response: `[{"recipient_id": "test_user", "text": "Hey! How are you?"}]`
 
-### Interact with Websocket
+#### Interact with Websocket
 
 1. Start server with CORS enabled: `rasa run --enable-api --cors "*"`
 2. Start action server: `rasa run actions`
 3. Start a webserver of your choice inside the subfolder `./webclient`
 
-### Advanced remote server setup
+#### Advanced remote server setup
 
 Instructions found in this document:
 https://github.com/tsrodf/rasa-bot/blob/main/server/server_setup.md
 
 ### Training
 
+#### Conversation Data Files
+
+- Write new `intents`, `utter_responses`, `stories`, `rules` and/or `actions`.
 - Run `rasa train` to train a model using provided NLU data and stories. Models are saved to `./models.`. This should be done every time the NLU data is modified.
+
+#### Interactive Learning
+
+- Run interactive learning in the command line with `rasa interactive`.
+- Run action server parallel.
+- Interact with the CLI in order to train the bot with new NLU data.
 
 ## Sources
 
