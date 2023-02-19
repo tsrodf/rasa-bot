@@ -96,51 +96,47 @@ We don’t have to match predefined questions character by character. Also it fe
 
 ### Domain
 
-The domain defines the universe where the rasa-bot performs its function. It defines the intents, the responses and a configuration for conversation sessions and it can also include entities, slots, forms and actions.
-
-The domain consists of either one or several YAML files. When the content is split across multiple documentos it's automatically read and merge.
+The domain defines the universe where the rasa-bot performs its function. It defines the intents, the responses and a configuration for conversation sessions and it can also include entities, slots, forms and actions. The domain consists of either one or several YAML files (`rasa\domain.yml`).
 
 #### Intents
 
-Intents are categories in which the messages received by the rasa-bot are grouped. They represent the purpose of the user interacting with the bot and are listed in the domain file (see [NLU data](#nlu-data)). It's also possible to use or ignore certain entities for an intent.
+Intents are categories in which the messages received by the rasa-bot are grouped. They represent the purpose of the user interacting with the bot and are listed in the domain file. It's also possible to use or ignore certain entities for an intent.
 
 #### Responses
 
-Responses are actions that send a message to a user without running any custom code or returning events. They can be directly defined in the domain file. In order to receive a wider range of responses it's recommended to add more than one example to each response. Rasa chooses one answer randomly.
+Responses are actions that send a message to a user without running any custom code or returning events. They can be directly defined in the domain file. In order to receive a wider range of responses, it's recommended to add more than one example to each response. Rasa chooses one answer randomly.
 
 #### Session configuration
 
-It represents the dialogue between the bot and the user. Conversation sessions can begin when the user starts the conversation, when the user sends a message after a period of inactivity or manually triggered with an intent message. It's possible to determine the session expiration time and the option to carry over slots to a new session.
+It represents the dialogue between the bot and the user. Conversation sessions can begin when the user starts the conversation, when the user sends a message after a period of inactivity or manually triggered with an intent message.
 
 #### Entities
 
-Entities are structured pieces of information inside a user message, which have to be extracted by either specifying them or defining regular expressions. By default, entities influence action prediction it's possible to configure the domain in order to ignore entities for certain intents. Entities roles and groups can also be defined.
+Entities are structured pieces of information inside a user message, which have to be extracted by either specifying them or defining regular expressions. By default, entities influence action prediction but it's possible to configure the domain in order to ignore entities for certain intents. Entities roles and groups can also be defined.
 
 #### Slots and Forms
 
-Slots represent the bot's memory. They could be used to store information provided by the user or coming from the outside (e.g. through APIs). They should be defined with a name, a type and predefined mappings. Slots can also influence the conversation behavior. The Slot types are are text, boolean, categorical, float, list, any or custom - which should be self-defined.
+Slots represent the bot's memory. They could be used to store information provided by the user or coming from the outside (e.g. through APIs). They should be defined with a name, a type and predefined mappings. Slots can also influence the conversation behavior.
 
 Forms are a special type of action intended to help the bot collect information about the user.
 
 #### Actions
 
-Actions are the things that the bot can actually do. The most common examples are respond to a user, make an external API call or query a database. Responses are included in the domain file, whereas custom actions are only listed on it but they have to be implemented in the actions file.
+Actions are the things that the bot can actually do. The most common examples are respond to a user, make an external API call or query a database. Responses are included in the domain file, whereas custom actions are only listed on it but they have to be implemented in the actions file (`rasa\actions\actions.py`).
 
 ### NLU data
 
 The main objective of NLU (Natural Language Understanding) is to extract structured data from user messages. This information consists of the user's intent and any entities used. It's possible to define some additional information, such as Regular Expressions and Lookup Tables.
 
-NLU data is included in a YAML file, which consists of intents and synonyms. It should contain at least two examples for each intent to facilitate recognition. The latter can be used to store words which can designate the same entity.
+NLU data is included in a YAML file, which consists of intents and synonyms (`rasa\data\nlu.yml`). It should contain at least two examples for each intent to facilitate recognition. The latter can be used to store words which can designate the same entity.
 
 ### Stories
 
-Stories represent a conversation beetween a user and a bot. They have a name and steps consisting of several intents and actions. When using events, checkpoints and statements they need to be specified. They have to be written to the stories YAML file.
+Stories represent a conversation beetween a user and a bot. They have a name and steps consisting of several intents and actions. When using events, checkpoints and statements they need to be specified. They have to be written to the stories YAML file (`rasa\data\stories.yml`).
 
 ### Rules
 
-Rules are used to handle small specific conversation patterns, but they cannot generalize to unseen conversation paths, unlike stories. Their overuse is not recommended and the `RulePolicy` should be included in the model configuration. They are included in the rules YAML file.
-
-There are other components, some of which have been already mentioned, that will not be explained any further since they have not been used in this project.
+Rules are used to handle small specific conversation patterns, but they cannot generalize to unseen conversation paths, unlike stories. Their overuse is not recommended and the `RulePolicy` should be included in the model configuration. They are included in the rules YAML file (`rasa\data\rules.yml`).
 
 ### Reminders
 
@@ -148,10 +144,11 @@ Reminders are used to reach out to the used after a set amount of time in order.
 
 In a previous phase of the project reminders were implemented to trigger a specific bot response at a given time to simulate that the bot had taken the lead to change the subject or talk about something in particular. This option was disabled since it does not suit the specifications of the project.
 
+There are other components, some of which have been already mentioned, which will not be explained further since they have not been used in this project.
+
 ## Rasa Architecture
 
-Rasa architecture is scalable. The two main components are Natural Language Understanding (NLU) and dialogue management, respectively represented in the following diagram as _NLU Pipeline_ and _Dialogue Policies_. The first is 
-responsible for handling intent classificaton, entity extraction and response retrieval; and the latter decides the next action in a conversation based on the context.
+Rasa architecture is scalable. The two main components are Natural Language Understanding (NLU) and dialogue management, respectively represented in the following diagram as _NLU Pipeline_ and _Dialogue Policies_. The first is responsible for handling intent classificaton, entity extraction and response retrieval; and the latter decides the next action in a conversation based on the context.
 
 <img src="https://user-images.githubusercontent.com/63344051/219408685-8adf4380-1405-474b-9035-0600b4578585.png" width="70%">
 
@@ -159,19 +156,21 @@ _**Diagram** Rasa architecture overview_
 
 ### Pipeline Components
 
-- Language Model
-- Tokenizers
-- Featurizers
-- Intent Classifiers
-- Entity Extractors
-- Selectors
+- **Language Model**. The components MitieNLP and SpacyNLP load pre-trained models which are necessary to use pre-trained word vectors in the pipeline.
+- **Tokenizers** split text into tokens. Tokenizers that may be used are WhitespaceTokenizer, JiebaTokenizer - for Chinese language -, MitieTokenizer, SpacyTokenizer.
+- **Featurizers** transform raw input data into a feature vector and are divided into sparse featurizers and dense featurizers. Featurizers that can be used are MitieFeaturizer, SpacyFeaturizer, ConveRTFeaturizer, LanguageModelFeaturizer, RegexFeaturizer, CountVectorsFeaturizer and LexicalSyntacticFeaturizer.
+- **Intent Classifiers** are responsible for assigning one of the intents defined in the domain file to messages from the user. Some of them are MitieIntentClassifier, LogisticRegressionClassifier, SklearnIntentClassifier, KeywordIntentClassifier, DIETClassifier and FallbackClassifier.
+- **Entity Extractors** are responsible for extracting entities from incoming user messages. Some entity extractors are MitieEntityExtractor, SpacyEntityExtractor, CRFEntityExtractor, DucklingEntityExtractor, DIETClassifier, RegexEntityExtractor and EntitySynonymMapper.
+- **Selectors** predict a bot response from a set of possible responses.
+- **Custom Components**. It's also possible to create and add a custom component to the pipeline. 
 
 ## Limitations
 
-If no intent detected, no response.
+- A rasa-bot uses pre-trained NLU data, which means it can only assign intents to incomming user messages that are known to him.
 
 ## Possible enhacements
-- Add corpus -> example: [Building a rasa chatbot to perform a movie search](https://medium.com/betacom/building-a-rasa-chatbot-to-perform-movie-search-60cea9829e60)
+- Add corpus
+  - Example: [Building a rasa chatbot to perform a movie search](https://medium.com/betacom/building-a-rasa-chatbot-to-perform-movie-search-60cea9829e60)
 - webui hosten und text to speech
 
 ## Guidelines
@@ -228,5 +227,5 @@ https://github.com/tsrodf/rasa-bot/blob/main/server/server_setup.md
 
 ## Sources
 
-- Luo
-- https://rasa.com/docs/rasa/ 
+- Luo, Bei et al. (2021) _A critical review of state-of-the-art chatbot designs and applications_
+- [Rasa Documentation](https://rasa.com/docs/rasa/)
