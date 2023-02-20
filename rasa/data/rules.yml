@@ -40,4 +40,4 @@ rules:
 - rule: Say don't worry when the user says sorry
   steps:
   - intent: sorry
-  - action: utter_notworry
+  - action: utter_not_worry

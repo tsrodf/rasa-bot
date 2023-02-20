@@ -72,8 +72,7 @@ class ActionGetWeather(Action):
             response = responses[random.randint(0, 2)]
         finally:
             dispatcher.utter_message(response)
-#            return [SlotSet('location', loc)]
-            return []
+            return [SlotSet('location', loc)]
 
 
 # action to get a random joke
@@ -143,11 +142,6 @@ class ActionGetAnswerToRiddle(Action):
         try:
             solution = tracker.get_slot('riddle_answer')
             text = tracker.latest_message.get("text")
-#            words = text.lower().split()
-#            for word in words:
-#                if word != 'a' and word != 'the' and word != 'i':
-#                    answer = word
-#                    break
             if text == solution:
                 response = """You nailed it!"""
             else:
@@ -202,9 +196,6 @@ class ActionGetNewsDescription(Action):
         try:
             intent = tracker.latest_message['intent'].get('name')
             description = tracker.get_slot('news')
-#            if description[1].islower():
-#               description = description[0].lower() + description[1:]
-            # if intent is deny, meaning the user doesn't know
             if intent == 'deny':
                 response = """Apparently {}.""".format(description)
             else:
@@ -285,13 +276,6 @@ class ActionGetMeaning(Action):
         return "action_get_meaning"
 
     def run(self, dispatcher, tracker, domain):
-        #todo: extract variable from intent phrase (undefined slot)
-#        word = tracker.get_slot('word')
-#        dispatcher.utter_message(type(word)) --> NoneType
-#        sentence = tracker.latest_message.get("entities")
-#        dispatcher.utter_message(sentence)
-        
-        # test extract word from text
         try:
             text = tracker.latest_message.get("text")
             words = text.split()
@@ -303,18 +287,15 @@ class ActionGetMeaning(Action):
                 if w == "meaning" and len(words) >= words.index("meaning")+2:
                     index = words.index("meaning")+2
                     word = words[index]
-#        dispatcher.utter_message(word)
-        # end test
 
             url = 'https://api.dictionaryapi.dev/api/v2/entries/en/{}'.format(word)
             response = requests.get(url).text
             json_data =  json.loads(response)
-        #------------------------------------------------------can be random entry of subarray of definitions
-        # try to find word
-            # word not found
+            # try to find the word
             if isinstance(json_data, dict):
                 text = """Sorry pal, I don't know the word {}.""".format(word)
-            else:           
+            else: 
+                # it can be a random entry of subarray of definitions          
                 definition = json_data[0]["meanings"][0]['definitions'][0]['definition']
                 text = definition[0].lower() + definition[1:]
                 word = word[0].upper() + word[1:]
@@ -326,32 +307,7 @@ class ActionGetMeaning(Action):
             return []
 
 
-# action to get a response to a request
-class ActionGetResponse(Action):
-
-    def name(self) -> Text:
-        return "action_get_response"
-
-    def run(self, dispatcher, tracker, domain):
-        try:
-            list = []
-            text = tracker.latest_message.get("text").lower()
-            regex = r"i need (.*)"
-            list += re.findall(regex, text)
-            regex = r"i want (.*)"
-            list += re.findall(regex, text)
-
-            if list == []:
-                list.append("anything")
-
-            response = """{}: isn't that what everybody wants?""".format(list[0])
-        except:
-            response = """Sorry, I cannot help you accomplish that!"""
-        finally:
-            dispatcher.utter_message(response)
-            return []
-
-
+# action to get information about something
 class ActionGetInfo(Action):
 
     def name(self) -> Text:

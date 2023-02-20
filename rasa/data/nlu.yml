@@ -129,6 +129,11 @@ nlu:
     - Do you have any brothers or sisters?
     - Do you have any sibblings?
     - Tell me about your family.
+- intent: presentation
+  examples: |
+    - I'm
+    - My name is
+    - name
 - intent: out_of_scope
   examples: |
     - I want to order food
@@ -245,10 +250,6 @@ nlu:
     - enjoy solving riddles
     - I like riddles.
     - I'd like to solve a riddle
-- intent: do_request
-  examples: |
-    - I want
-    - I need
 - intent: offended
   examples: |
     - That wasn't funny
@@ -258,6 +259,7 @@ nlu:
     - I am heartbroken
     - It hurts to hear you say that
     - I'm sorry, but I can't continue this conversation
+
 - synonym: job
   examples: |
     - profession

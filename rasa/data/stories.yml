@@ -2,38 +2,44 @@ version: "3.1"
 
 stories:
 
-- story: happy path
+- story: Happy path
   steps:
   - intent: greet
   - action: utter_greet
   - intent: mood_great
   - action: utter_happy
 
-- story: sad path
+- story: Sad path
   steps:
   - intent: greet
   - action: utter_greet
   - intent: mood_unhappy
   - action: utter_cheer_up
 
-- story: talk hobbies
+- story: Talk hobbies
   steps:
   - intent: greet
   - action: utter_greet
   - intent: talk_hobbies
   - action: utter_talk_hobbies
   - intent: affirm
-  - action: utter_goodbye
+  - action: utter_happy
 
 - story: Talk about the weather
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: ask_weather
-#  - slot_was_set:
-#    - location
+  - slot_was_set:
+    - location
   - action: action_get_weather
+  - intent: thanks
+  - action: utter_welcome
 
-- story: tell joke
+- story: Tell joke
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: ask_joke
   - action: action_get_joke
   - or:
@@ -43,45 +49,64 @@ stories:
 
 - story: Talk about activity 
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: ask_activity
   - action: action_get_activity
+  - intent: thanks
+  - action: utter_welcome
 
 - story: Talk about beer
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: talk_beer
   - action: action_get_beer
+  - intent: affirm
+  - action: utter_happy
 
-- story: recipe
+- story: Suggest recipe
   steps: 
+  - intent: greet
+  - action: utter_greet
   - intent: talk_meal
   - action: action_get_meal
-
-- story: cocktail
+  - intent: affirm
+  - action: utter_happy
+  
+- story: Suggest cocktail
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: talk_cocktail
   - action: action_get_cocktail
+  - intent: affirm
+  - action: utter_happy
     
-- story: meaning
+- story: Ask for the meaning of a word
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: ask_meaning
   - action: action_get_meaning
 
-- story: request
-  steps:
-  - intent: do_request
-  - action: action_get_response
-
 - story: Talk about the news
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: ask_news
   - action: action_get_news_title
   - or:
     - intent: affirm
     - intent: deny
   - action: action_get_news_description
+  - intent: thanks
+  - action: utter_welcome
 
 - story: Solve a riddle
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: ask_riddle
   - action: action_get_riddle
 #  - intent:
@@ -91,15 +116,34 @@ stories:
 
 - story: Ask about info
   steps:
+  - intent: greet
+  - action: utter_greet
   - intent: ask_info
   - action: action_get_info
+  - intent: thanks
+  - action: utter_welcome
 
 - story: User says thanks
   steps:
   - intent: welcome
   - action: utter_happy
+  - intent: goodbye
+  - action: utter_goodbye
 
 - story: User is offended
   steps:
   - intent: offended
   - action: utter_sorry
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User presentation
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: chitchat
+  - action: utter_chitchat
+  - intent: presentation
+  - slot_was_set:
+    - name
+  - action: utter_nice_to_meet_you
