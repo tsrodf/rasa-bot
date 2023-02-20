@@ -3,8 +3,8 @@
 ## Table of Contents
 
 - [Concepts](#concepts)
-- [Why intent-based chatbots](#why-intent-based-chatbots)
-- [Examples for intent-based chatbots](#examples-for-intent-based-chatbots)
+- [Why intent-based Chatbots](#why-intent-based-chatbots)
+- [Examples for intent-based Chatbots](#examples-for-intent-based-chatbots)
 - [Discarded Concepts](#discarded-concepts)
 - [Technologies used](#technologies-used)
 - [Rasa Components](#rasa-components)
@@ -25,11 +25,13 @@
 - [Posible Enhacements](#possible-enhacements)
 - [Guidelines](#guidelines)
   - [Installation with Conda](#installation-with-conda)
+    - [Create new Project](#create-new-proyect)
+    - [Install existing Project](#install-existing-project)
   - [Interaction](#interaction)
     - [Interact through Shell](#interact-through-shell)
     - [Interact with REST-Service](#interact-with-rest-service)
     - [Interact with Websocket](#interact-with-websocket)
-    - [Advanced remote server setup](#advanced-remote-server-setup)
+    - [Advanced Remote Server Setup](#advanced-remote-server-setup)
   - [Training](#training)
     - [Conversation Data Files](#conversation-data-files)
     - [Interactive Learning](#interactive-learning)
@@ -41,12 +43,12 @@ NLP(Natural Language Processing) helps interact in a human-like way.
 
 We don’t have to match predefined questions character by character. Also it feels more natural for users to write like they would with a human instead of pressing buttons or using forms.
 
-### Why intent-based chatbots?
+### Why intent-based Chatbots?
 
 - They don’t have to follow a specific conversational path. They can adapt to an user changing their mind
 - Good at answering specific predefined question-patterns
 
-#### Examples for intent-based chatbots:
+#### Examples for intent-based Chatbots:
 
 - Dialogflow1 (originally named Api.ai), developed by Google
 - wit.Ai developed by Facebook are used in academic research (Handoyo et al., 2018; Rosruen & Samanchuen, 2019)
@@ -106,7 +108,7 @@ Intents are categories in which the messages received by the rasa-bot are groupe
 
 Responses are actions that send a message to a user without running any custom code or returning events. They can be directly defined in the domain file. In order to receive a wider range of responses, it's recommended to add more than one example to each response. Rasa chooses one answer randomly.
 
-#### Session configuration
+#### Session Configuration
 
 It represents the dialogue between the bot and the user. Conversation sessions can begin when the user starts the conversation, when the user sends a message after a period of inactivity or manually triggered with an intent message.
 
@@ -166,30 +168,40 @@ _**Diagram** Rasa architecture overview_
 
 ## Limitations
 
-- A rasa-bot uses pre-trained NLU data, which means it can only assign intents to incomming user messages that are known to him.
+- A rasa-bot uses pre-trained NLU data, which means that only entities declared in the NLU data can be recognized and assigned to incomming user messages.
+- Rasa is not compatible with Python versions above 3.8v.
+- Rasa's universe is wide but relatively poorly documented, so that it requires time to learn about all of its options.
 
-## Possible enhacements
+## Possible Enhacements
 - Add corpus
   - Example: [Building a rasa chatbot to perform a movie search](https://medium.com/betacom/building-a-rasa-chatbot-to-perform-movie-search-60cea9829e60)
 - webui hosten und text to speech
 
 ## Guidelines
 
-### Installation with conda
+### Installation with Conda
 
-1. Create conda environment: `conda create --name <name> python=3.8`
-2. Activate environment: `conda activate <name>`
-3. Install rasa: `pip install rasa`
-4. Create folder *rasa* and cd into it.
+1. Open a terminal window and run `conda create --name <name> python=3.8` to create a conda environment.
+2. Run `conda activate <name>` to activate the created environment.
+3. Run `pip install rasa` to install rasa.
+
+#### Create new Project
+
+4. Create folder *rasa* and change to this directory.
 5. Run `rasa init` to create a new project with example training data, actions, and config files.
+
+#### Install existing Project
+
+4. Change to *rasa* directory.
+5. Run `rasa train` to train a new model according to the given data.
 
 ### Interaction
 
 #### Interact through Shell
 
-1. Activate the environment in which rasa has been installed.
-2. Run `rasa shell` to load the trained model and interact with the bot on the command line.
-3. Run to stop shell: `/stop`
+1. Open two terminal windows and activate the environment in which rasa has been installed.
+2. Run `rasa run actions` in one of them to use registered actions.
+3. Run `rasa shell` in the other one to load the trained model and interact with the bot on the command line. To stop the process run `/stop`.
 
 #### Interact with REST-Service
 
@@ -207,7 +219,7 @@ _**Diagram** Rasa architecture overview_
 2. Start action server: `rasa run actions`
 3. Start a webserver of your choice inside the subfolder `./webclient`
 
-#### Advanced remote server setup
+#### Advanced Remote Server Setup
 
 Instructions found in this document:
 https://github.com/tsrodf/rasa-bot/blob/main/server/server_setup.md
@@ -216,14 +228,17 @@ https://github.com/tsrodf/rasa-bot/blob/main/server/server_setup.md
 
 #### Conversation Data Files
 
-- Write new `intents`, `utter_responses`, `stories`, `rules` and/or `actions`.
-- Run `rasa train` to train a model using provided NLU data and stories. Models are saved to `./models.`. This should be done every time the NLU data is modified.
+1. Add new `intents`, `utter_responses`, `stories`, `rules` and/or `actions` to the proper files.
+2. Open a terminal window and activate the environment in which rasa has been installed.
+3. Run `rasa train` to train a model using provided NLU data and stories. Models are saved to `./models.`. This should be done every time the NLU data is modified.
+4. You can run `rasa data validate` to check if the given NLU data is correct. This function works faster than `rasa train`, but it's necessary to train a model in order to interact with the bot.
 
 #### Interactive Learning
 
-- Run interactive learning in the command line with `rasa interactive`.
-- Run action server parallel.
-- Interact with the CLI in order to train the bot with new NLU data.
+1. Open two terminal windows and activate the environment in which rasa has been installed.
+2. Run `rasa interactive` in one of them to to activate the interactive learning tool.
+3. Run `rasa run actions` in the other one to use registered actions.
+4. Interact with the CLI in order to train the bot with new NLU data.
 
 ## Sources
 
