@@ -22,10 +22,10 @@
 - [Rasa Architecture](#rasa-architecture)
   - [Pipeline Components](#pipeline-components)
 - [Limitations](#limitations)
-- [Posible Enhacements](#possible-enhacements)
+- [Possible Enhancements](#possible-enhancements)
 - [Guidelines](#guidelines)
   - [Installation with Conda](#installation-with-conda)
-    - [Create new Project](#create-new-proyect)
+    - [Create new Project](#create-new-project)
     - [Install existing Project](#install-existing-project)
   - [Interaction](#interaction)
     - [Interact through Shell](#interact-through-shell)
@@ -172,10 +172,10 @@ _**Diagram** Rasa architecture overview_
 - Rasa is not compatible with Python versions above 3.8v.
 - Rasa's universe is wide but relatively poorly documented, so that it requires time to learn about all of its options.
 
-## Possible Enhacements
+## Possible Enhancements
 - Add corpus
   - Example: [Building a rasa chatbot to perform a movie search](https://medium.com/betacom/building-a-rasa-chatbot-to-perform-movie-search-60cea9829e60)
-- webui hosten und text to speech
+- Host webui and text to speech
 
 ## Guidelines
 
