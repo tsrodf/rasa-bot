@@ -5,7 +5,7 @@
 - [Concepts](#concepts)
 - [Why intent-based Chatbots](#why-intent-based-chatbots)
 - [Examples for intent-based Chatbots](#examples-for-intent-based-chatbots)
-- [Discarded Concepts](#discarded-concepts)
+- [Discarded Prototype](#discarded-prototype)
 - [Technologies used](#technologies-used)
 - [Rasa Components](#rasa-components)
   - [Domain](#domain)
@@ -53,7 +53,7 @@ We don’t have to match predefined questions character by character. Also it fe
 - Dialogflow1 (originally named Api.ai), developed by Google
 - wit.Ai developed by Facebook are used in academic research (Handoyo et al., 2018; Rosruen & Samanchuen, 2019)
 
-### Discarded Concepts:
+### Discarded Prototype:
 
 - [Custom intent-based chatbot with pytorch and nltk built from scratch](https://github.com/Blankjr/my-nlp-chatbot).
 
